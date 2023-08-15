@@ -1,0 +1,36 @@
+name: Test the application
+
+on:
+  pull_request:
+    branches:
+      - stable
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - name: Run tests
+        run: |
+          ./gradlew check
+
+      - name: Archive test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test report
+          path: build/reports/tests/test
