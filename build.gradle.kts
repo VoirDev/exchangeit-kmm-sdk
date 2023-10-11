@@ -42,10 +42,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
                 implementation("io.ktor:ktor-client-serialization:2.3.5")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
-                implementation("io.ktor:ktor-client-logging:2.3.5")
-
-                // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic/
-                implementation("ch.qos.logback:logback-classic:1.4.11")
             }
         }
         val commonTest by getting {

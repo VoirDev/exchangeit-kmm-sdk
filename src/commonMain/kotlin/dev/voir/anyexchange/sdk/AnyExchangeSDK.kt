@@ -8,7 +8,6 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -29,9 +28,6 @@ class AnyExchangeSDK(engine: HttpClientEngine) : IAnyExchangeSDK {
             url.protocol = URLProtocol.HTTPS
             url.host = API_HOST
             url.path(API_BASE_PATH, url.encodedPath)
-        }
-        install(Logging) {
-            level = LogLevel.ALL
         }
         install(ContentNegotiation) {
             json(Json {
