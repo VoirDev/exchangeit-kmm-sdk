@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CurrencyRateDto(
     val code: String,
-    val rate: Float,
+    val rate: Double,
     val source: String
 )

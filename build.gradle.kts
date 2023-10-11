@@ -1,6 +1,7 @@
 plugins {
-    kotlin("multiplatform") version "1.9.0"
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("multiplatform") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
+    id("maven-publish")
 }
 
 buildscript {
@@ -16,12 +17,13 @@ allprojects {
     }
 }
 
-group = "dev.voir.anyexchange"
+group = "dev.voir"
 version = "1.0.0"
 
 
 kotlin {
     jvm()
+    ios()
     iosArm64()
     iosX64()
     iosSimulatorArm64()
@@ -33,19 +35,19 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
                 // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0-RC")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-core:2.3.3")
-                implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
-                implementation("io.ktor:ktor-client-serialization:2.3.3")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
-                implementation("io.ktor:ktor-client-logging:2.3.3")
+                implementation("io.ktor:ktor-client-core:2.3.5")
+                implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+                implementation("io.ktor:ktor-client-serialization:2.3.5")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+                implementation("io.ktor:ktor-client-logging:2.3.5")
 
-                implementation("ch.qos.logback:logback-classic:1.2.3")
+                // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic/
+                implementation("ch.qos.logback:logback-classic:1.4.11")
             }
         }
-
         val commonTest by getting {
             dependencies {
                 // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
@@ -60,44 +62,22 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
 
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-okhttp:2.3.3")
+                implementation("io.ktor:ktor-client-okhttp:2.3.5")
             }
         }
 
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
-            }
-        }
-
-        val iosMain by creating {
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by getting {
             dependsOn(commonMain)
             dependencies {
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-darwin:2.3.3")
+                implementation("io.ktor:ktor-client-darwin:2.3.5")
             }
-        }
-
-        val iosTest by creating {
-            dependencies {
-                // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-            }
-        }
-
-        sourceSets.filter { sourceSet ->
-            sourceSet.name.run {
-                startsWith("iosX64") ||
-                        startsWith("iosArm") ||
-                        startsWith("iosSimulator")
-            }
-        }.forEach { sourceSet ->
-            if (sourceSet.name.endsWith("Main")) {
-                sourceSet.dependsOn(iosMain)
-            } else {
-                sourceSet.dependsOn(iosTest)
-            }
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }
