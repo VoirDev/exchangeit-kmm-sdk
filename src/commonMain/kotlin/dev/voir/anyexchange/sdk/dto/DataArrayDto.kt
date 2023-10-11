@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DataArrayDto<T>(
-    val total: Int,
+    val meta: ListMetaDto,
     val data: List<T>
 )
