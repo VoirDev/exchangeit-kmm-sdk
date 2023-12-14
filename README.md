@@ -1,13 +1,36 @@
-# AnyExchange SDK (Kotlin MultiPlatform)
+# Exchange It: SDK (Kotlin MultiPlatform)
 
-SDK for AnyExchange API written in Kotlin. For now supports iOS, JVM and Android.
+SDK for [Exchange It API](https://exchangeit.app/docs) written in Kotlin. For now supports iOS, JVM and Android.
 
 API supports requests to fetch list of currencies, latest/historical/average monthly rates for selected
 currency.
 
 *No authorization needed.* Rates are collected from several *FREE* sources and provided as it is.
 
-Right now AnyExchange API is in *alpha* so use with caution.
+Right now Exchange It API is in *alpha* so use with caution.
+
+## Installation
+
+To use the package inside your application, just add the GitHub repository to your repository list.
+
+> Add the credentials section if the repository isn't public
+
+```kotlin
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "Github Packages"
+            url = uri("https://maven.pkg.github.com/voirdev/exchangeit-kmm-sdk")
+        }
+    }
+}
+
+dependencies {
+    implementation("dev.voir.mysharedlib:shared:0.1.1")
+}
+```
 
 ## Usage
 
@@ -16,7 +39,7 @@ Right now AnyExchange API is in *alpha* so use with caution.
 Creating an instance of SDK is quite simple, just write
 
 ```kotlin
-val sdk = AnyExchangeSDKFactory.create()
+val sdk = ExchangeItSDKFactory.create()
 ```
 
 #### Run request
