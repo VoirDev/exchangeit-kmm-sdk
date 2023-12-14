@@ -68,7 +68,8 @@ kotlin {
 publishing {
     repositories {
         maven {
-            setUrl("https://maven.pkg.github.com/voirdev/exchangeit-kmm-sdk")
+            name = "github"
+            setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
             credentials {
                 username = GITHUB_USER
                 password = GITHUB_TOKEN
