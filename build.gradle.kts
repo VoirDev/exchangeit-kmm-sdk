@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.9.10"
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("multiplatform") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.21"
     id("maven-publish")
 }
 
@@ -35,13 +35,13 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
                 // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-core:2.3.5")
-                implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
-                implementation("io.ktor:ktor-client-serialization:2.3.5")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+                implementation("io.ktor:ktor-client-core:2.3.7")
+                implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+                implementation("io.ktor:ktor-client-serialization:2.3.7")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
             }
         }
         val commonTest by getting {
@@ -58,7 +58,7 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
 
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-okhttp:2.3.5")
+                implementation("io.ktor:ktor-client-okhttp:2.3.7")
             }
         }
 
@@ -69,7 +69,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-                implementation("io.ktor:ktor-client-darwin:2.3.5")
+                implementation("io.ktor:ktor-client-darwin:2.3.7")
             }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)

@@ -1,8 +1,8 @@
-package dev.voir.anyexchange.sdk
+package dev.voir.exchangeit.sdk
 
-import dev.voir.anyexchange.sdk.dto.*
-import dev.voir.anyexchange.sdk.error.AnyExchangeSDKError
-import dev.voir.anyexchange.sdk.error.AnyExchangeSDKException
+import dev.voir.exchangeit.sdk.dto.*
+import dev.voir.exchangeit.sdk.error.ExchangeItSDKError
+import dev.voir.exchangeit.sdk.error.ExchangeItSDKException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -22,7 +22,7 @@ private val json = Json {
     prettyPrint = true
 }
 
-class AnyExchangeSDK(engine: HttpClientEngine) : IAnyExchangeSDK {
+class ExchangeItItSDK(engine: HttpClientEngine) : IExchangeItSDK {
     private val client = HttpClient(engine) {
         defaultRequest {
             url.protocol = URLProtocol.HTTPS
@@ -41,7 +41,7 @@ class AnyExchangeSDK(engine: HttpClientEngine) : IAnyExchangeSDK {
             try {
                 proceed()
             } catch (e: Throwable) {
-                throw AnyExchangeSDKException(e)
+                throw ExchangeItSDKException(e)
             }
         }
     }
@@ -105,12 +105,12 @@ class AnyExchangeSDK(engine: HttpClientEngine) : IAnyExchangeSDK {
             } catch (e: SerializationException) {
                 null
             }
-            throw AnyExchangeSDKException(AnyExchangeSDKError(status.value, bodyError))
+            throw ExchangeItSDKException(ExchangeItSDKError(status.value, bodyError))
         }
     }
 
     companion object {
-        private const val API_HOST = "anyexchange-api.voir.dev"
+        private const val API_HOST = "api.exchangeit.app"
         private const val API_BASE_PATH = ""
     }
 }

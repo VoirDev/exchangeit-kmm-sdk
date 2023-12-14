@@ -1,10 +1,10 @@
-package dev.voir.anyexchange.sdk.error
+package dev.voir.exchangeit.sdk.error
 
-class AnyExchangeSDKException : Exception {
-    var error: AnyExchangeSDKError? = null
+class ExchangeItSDKException : Exception {
+    var error: ExchangeItSDKError? = null
         private set
 
-    constructor(error: AnyExchangeSDKError?) {
+    constructor(error: ExchangeItSDKError?) {
         this.error = error
     }
 
