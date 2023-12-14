@@ -21,8 +21,8 @@ allprojects {
 group = "dev.voir"
 version = "1.0.0"
 
-val githubUser: String by project
-val githubToken: String by project
+val GITHUB_USER: String by project
+val GITHUB_TOKEN: String by project
 
 kotlin {
     jvm()
@@ -70,8 +70,8 @@ publishing {
         maven {
             setUrl("https://maven.pkg.github.com/voirdev/exchangeit-kmm-sdk")
             credentials {
-                username = githubUser
-                password = githubToken
+                username = GITHUB_USER
+                password = GITHUB_TOKEN
             }
         }
     }
