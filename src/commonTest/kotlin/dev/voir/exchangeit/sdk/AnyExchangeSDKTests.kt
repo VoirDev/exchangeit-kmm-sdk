@@ -1,4 +1,4 @@
-package dev.voir.anyexchange.sdk
+package dev.voir.exchangeit.sdk
 
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -9,8 +9,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(DelicateCoroutinesApi::class)
-class AnyExchangeSDKTests {
-    private val sdk = AnyExchangeSDKFactory.create()
+class ExchangeItSDKTests {
+    private val sdk = ExchangeItSDKFactory.create()
     private val testLock = Mutex()
 
     init {

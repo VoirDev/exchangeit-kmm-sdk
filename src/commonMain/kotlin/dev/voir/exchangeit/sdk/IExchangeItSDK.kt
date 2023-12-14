@@ -1,8 +1,8 @@
-package dev.voir.anyexchange.sdk
+package dev.voir.exchangeit.sdk
 
-import dev.voir.anyexchange.sdk.dto.*
+import dev.voir.exchangeit.sdk.dto.*
 
-interface IAnyExchangeSDK {
+interface IExchangeItSDK {
     suspend fun getCurrencies(crypto: Boolean? = null): DataArrayDto<CurrencyDto>
 
     suspend fun getLatestRates(base: String, codes: List<String>? = null): DataDto<CurrencyWithLatestRatesDto>

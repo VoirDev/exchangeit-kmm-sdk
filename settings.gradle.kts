@@ -8,4 +8,4 @@ pluginManagement {
 plugins {
 }
 
-rootProject.name = "anyexchange-sdk"
+rootProject.name = "exchangeit-sdk"
