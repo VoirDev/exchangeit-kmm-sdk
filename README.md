@@ -9,6 +9,29 @@ currency.
 
 Right now Exchange It API is in *alpha* so use with caution.
 
+## Installation
+
+To use the package inside your application, just add the GitHub repository to your repository list.
+
+> Add the credentials section if the repository isn't public
+
+```kotlin
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "Github Packages"
+            url = uri("https://maven.pkg.github.com/voirdev/exchangeit-kmm-sdk")
+        }
+    }
+}
+
+dependencies {
+    implementation("dev.voir.mysharedlib:shared:0.1.1")
+}
+```
+
 ## Usage
 
 #### Create instance of SDK
