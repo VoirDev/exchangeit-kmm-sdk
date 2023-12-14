@@ -18,7 +18,7 @@ allprojects {
     }
 }
 
-group = "dev.voir"
+group = "dev.voir.exchangeit.sdk"
 version = "1.0.0"
 
 val GITHUB_USER: String by project
