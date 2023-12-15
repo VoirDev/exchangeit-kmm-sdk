@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
     id("maven-publish")
     id("signing")
 }
@@ -15,6 +16,17 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
+    }
+}
+
+nexusPublishing {
+    // Configure maven central repository
+    // https://github.com/gradle-nexus/publish-plugin#publishing-to-maven-central-via-sonatype-ossrh
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
     }
 }
 
