@@ -114,16 +114,16 @@ publishing {
         }
     }
 
-    repositories {
-        maven {
-            name = "Github"
-            setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+    /*    repositories {
+            maven {
+                name = "Github"
+                setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
             }
-        }
-    }
+        }*/
 }
 
 signing {
