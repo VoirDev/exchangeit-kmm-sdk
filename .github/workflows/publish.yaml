@@ -1,9 +1,8 @@
 name: Release the SDK
 
 on:
-  pull_request:
-    branches:
-      - stable
+  release:
+    types: [ published ]
 
 jobs:
   build-and-release:
@@ -39,6 +38,3 @@ jobs:
             -Psigning.gnupg.keyName=${{ secrets.OSSRH_GPG_SECRET_KEY_ID }}
             -PsonatypeUsername=${{ secrets.OSSRH_USERNAME }}
             -PsonatypePassword=${{ secrets.OSSRH_TOKEN }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
-
