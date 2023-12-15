@@ -62,53 +62,43 @@ kotlin {
     }
 }
 
-signing {
-    if (project.hasProperty("signing.gnupg.keyName")) {
-        useGpgCmd()
-        sign(publishing.publications)
-    }
-}
-
 publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "exchangeit-sdk"
-            groupId = "dev.voir"
-            version = "1.0.0"
-            from(components["kotlin"])
+    publications.withType<MavenPublication> {
+        artifactId = "exchangeit-sdk"
+        groupId = "dev.voir"
+        version = "1.0.0"
 
-            artifact(tasks.register("${name}JavadocJar", Jar::class) {
-                archiveClassifier.set("javadoc")
-                archiveAppendix.set(this.name)
-            })
+        artifact(tasks.register("${name}JavadocJar", Jar::class) {
+            archiveClassifier.set("javadoc")
+            archiveAppendix.set(this.name)
+        })
 
-            pom {
-                packaging = "jar"
-                name.set("Exchange It: Kotlin Multiplatform SDK")
+        pom {
+            packaging = "jar"
+            name.set("Exchange It: Kotlin Multiplatform SDK")
+            url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
+            description.set("SDK for Exchange It API written in Kotlin. For now supports iOS, JVM and Android.")
+
+            licenses {
+                license {
+                    name.set("GNU Lesser General Public License, Version 3")
+                    url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
+                }
+            }
+
+            scm {
+                connection.set("scm:https://github.com/VoirDev/exchangeit-kmm-sdk.git")
+                developerConnection.set("scm:git@github.com:VoirDev/exchangeit-kmm-sdk.git")
                 url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
-                description.set("SDK for Exchange It API written in Kotlin. For now supports iOS, JVM and Android.")
+            }
 
-                licenses {
-                    license {
-                        name.set("GNU Lesser General Public License, Version 3")
-                        url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:https://github.com/VoirDev/exchangeit-kmm-sdk.git")
-                    developerConnection.set("scm:git@github.com:VoirDev/exchangeit-kmm-sdk.git")
-                    url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
-                }
-
-                developers {
-                    developer {
-                        id.set("checksanity")
-                        name.set("Gary Bezruchko")
-                        email.set("hello@exchangeit.app")
-                        organization.set("VOIR")
-                        organizationUrl.set("https://voir.dev")
-                    }
+            developers {
+                developer {
+                    id.set("checksanity")
+                    name.set("Gary Bezruchko")
+                    email.set("hello@exchangeit.app")
+                    organization.set("VOIR")
+                    organizationUrl.set("https://voir.dev")
                 }
             }
         }
@@ -119,7 +109,7 @@ publishing {
             name = "Maven"
             setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
         }
-        
+
         maven {
             name = "Github"
             setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
@@ -128,5 +118,12 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
+    }
+}
+
+signing {
+    if (project.hasProperty("signing.gnupg.keyName")) {
+        useGpgCmd()
+        sign(publishing.publications)
     }
 }
