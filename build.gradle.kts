@@ -64,20 +64,20 @@ kotlin {
 publishing {
     repositories {
         maven {
-            name = "github"
-            setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-
-        maven {
             name = "OSSRH"
             setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+        
+        maven {
+            name = "github"
+            setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
