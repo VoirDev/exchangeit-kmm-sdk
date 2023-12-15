@@ -3,7 +3,7 @@ name: Release the SDK
 on:
   pull_request:
     branches:
-      - fix-release-action
+      - stable
 
 jobs:
   build-and-release:
