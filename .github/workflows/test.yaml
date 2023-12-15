@@ -1,4 +1,4 @@
-name: Test the application
+name: Test the SDK
 
 on:
   pull_request:
