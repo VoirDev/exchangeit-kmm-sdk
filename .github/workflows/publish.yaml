@@ -1,8 +1,9 @@
 name: Release the SDK
 
 on:
-  release:
-    types: [ published ]
+  pull_request:
+    branches:
+      - stable
 
 jobs:
   build-and-release:
@@ -26,9 +27,13 @@ jobs:
       - name: Publish to Maven
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publish
+          arguments: |
+            publish
+            -Psigning.gnupg.passphrase='${{secrets.OSSRH_GPG_SECRET_KEY_PASSWORD}}'
+            -Psigning.gnupg.keyName='${{secrets.OSSRH_GPG_SECRET_KEY_ID}}'
+            -PsonatypeUsername='${{secrets.OSSRH_USERNAME}}'
+            -PsonatypePassword='${{secrets.OSSRH_PASSWORD}}'
+
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.FULL_TOKEN }}
 

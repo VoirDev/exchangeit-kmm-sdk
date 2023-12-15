@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
     id("maven-publish")
+    id("signing")
 }
 
 buildscript {
@@ -61,19 +62,66 @@ kotlin {
     }
 }
 
+signing {
+    if (project.hasProperty("signing.gnupg.keyName")) {
+        useGpgCmd()
+        sign(publishing.publications)
+    }
+}
+
 publishing {
-    repositories {
-        maven {
-            name = "OSSRH"
-            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = "exchangeit-sdk"
+            groupId = "dev.voir"
+            version = "1.0.0"
+            from(components["kotlin"])
+
+            artifact(tasks.register("${name}JavadocJar", Jar::class) {
+                archiveClassifier.set("javadoc")
+                archiveAppendix.set(this.name)
+            })
+
+            pom {
+                packaging = "jar"
+                name.set("Exchange It: Kotlin Multiplatform SDK")
+                url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
+                description.set("SDK for Exchange It API written in Kotlin. For now supports iOS, JVM and Android.")
+
+                licenses {
+                    license {
+                        name.set("GNU Lesser General Public License, Version 3")
+                        url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:https://github.com/VoirDev/exchangeit-kmm-sdk.git")
+                    developerConnection.set("scm:git@github.com:VoirDev/exchangeit-kmm-sdk.git")
+                    url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
+                }
+
+                developers {
+                    developer {
+                        id.set("checksanity")
+                        name.set("Gary Bezruchko")
+                        email.set("hello@exchangeit.app")
+                        organization.set("VOIR")
+                        organizationUrl.set("https://voir.dev")
+                    }
+                }
             }
         }
+    }
 
+    repositories {
         maven {
-            name = "github"
+            name = "Maven"
+            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+        }
+        
+        maven {
+            name = "Github"
             setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
