@@ -3,7 +3,7 @@ name: Test the SDK
 on:
   pull_request:
     branches:
-      - dev
+      - stable
 
 jobs:
   test:

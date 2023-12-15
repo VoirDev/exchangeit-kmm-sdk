@@ -1,9 +1,8 @@
 name: Release the SDK
 
 on:
-  pull_request:
-    branches:
-      - stable
+  release:
+    types: [ published ]
 
 jobs:
   build-and-release:
