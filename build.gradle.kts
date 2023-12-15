@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
-    id("org.jetbrains.dokka") version "1.9.10"
     id("maven-publish")
 }
 
@@ -18,7 +17,7 @@ allprojects {
     }
 }
 
-group = "dev.voir.exchangeit.sdk"
+group = "dev.voir"
 version = "1.0.0"
 
 val GITHUB_USER: String by project
