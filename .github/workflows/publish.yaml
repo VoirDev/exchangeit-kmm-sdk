@@ -24,5 +24,5 @@ jobs:
       - name: Release SDK
         run: ./gradlew check publish --no-configure-on-demand --no-daemon
         env:
-          ORG_GRADLE_PROJECT_GITHUB_USER: ${{ github.CURRENT_GITHUB_USER }}
-          ORG_GRADLE_PROJECT_GITHUB_TOKEN: ${{ github.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.CURRENT_GITHUB_USER }}
+          GITHUB_TOKEN: ${{ github.GITHUB_TOKEN }}

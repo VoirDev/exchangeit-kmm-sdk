@@ -71,8 +71,8 @@ publishing {
             name = "github"
             setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
             credentials {
-                username = GITHUB_USER
-                password = GITHUB_TOKEN
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
