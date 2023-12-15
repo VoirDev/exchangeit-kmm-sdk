@@ -3,7 +3,7 @@ name: Test the application
 on:
   pull_request:
     branches:
-      - stable
+      - dev
 
 jobs:
   test:
