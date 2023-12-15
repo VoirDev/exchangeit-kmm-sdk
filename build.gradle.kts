@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
-    id("org.jetbrains.dokka") version "1.9.10"
     id("maven-publish")
 }
 
@@ -20,9 +19,6 @@ allprojects {
 
 group = "dev.voir"
 version = "1.0.0"
-
-val githubUser: String by project
-val githubToken: String by project
 
 kotlin {
     jvm()
@@ -68,10 +64,11 @@ kotlin {
 publishing {
     repositories {
         maven {
-            setUrl("https://maven.pkg.github.com/voirdev/exchangeit-kmm-sdk")
+            name = "github"
+            setUrl("https://maven.pkg.github.com/VoirDev/exchangeit-kmm-sdk")
             credentials {
-                username = githubUser
-                password = githubToken
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }

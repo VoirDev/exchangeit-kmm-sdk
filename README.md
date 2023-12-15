@@ -28,7 +28,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("dev.voir.mysharedlib:shared:0.1.1")
+    implementation("dev.voir:exchangeit-sdk:1.0.0")
 }
 ```
 
