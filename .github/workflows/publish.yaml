@@ -21,8 +21,12 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Release SDK
-        run: ./gradlew check publish --no-configure-on-demand --no-daemon
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publish
         env:
-          GITHUB_USERNAME: ${{ github.CURRENT_GITHUB_USER }}
-          GITHUB_TOKEN: ${{ github.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
