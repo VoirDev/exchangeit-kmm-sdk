@@ -74,13 +74,15 @@ afterEvaluate {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "Sonatype"
-            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = project.property("sonatypeUsername").toString()
-                password = project.property("sonatypePassword").toString()
+    if (project.hasProperty("sonatypeUsername") && project.hasProperty("sonatypePassword")) {
+        repositories {
+            maven {
+                name = "Sonatype"
+                setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = project.property("sonatypeUsername").toString()
+                    password = project.property("sonatypePassword").toString()
+                }
             }
         }
     }
