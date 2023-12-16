@@ -22,7 +22,7 @@ private val json = Json {
     prettyPrint = true
 }
 
-class ExchangeItItSDK(engine: HttpClientEngine) : IExchangeItSDK {
+class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
     private val client = HttpClient(engine) {
         defaultRequest {
             url.protocol = URLProtocol.HTTPS

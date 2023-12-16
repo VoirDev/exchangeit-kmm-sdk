@@ -77,6 +77,16 @@ kotlin {
     }
 }
 
+afterEvaluate {
+    configure<PublishingExtension> {
+        publications.all {
+            val mavenPublication = this as? MavenPublication
+            mavenPublication?.artifactId =
+                "${project.name}${"-$name".takeUnless { "kotlinMultiplatform" in name }.orEmpty()}"
+        }
+    }
+}
+
 publishing {
     publications.withType<MavenPublication> {
         artifactId = "exchangeit-sdk"
