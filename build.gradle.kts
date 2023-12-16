@@ -29,7 +29,7 @@ nexusPublishing {
 }
 
 group = "dev.voir"
-version = "1.0.0"
+version = "1.0.1"
 
 kotlin {
     jvm()
@@ -58,6 +58,11 @@ kotlin {
             implementation(kotlin("test"))
         }
 
+        androidMain.dependencies {
+            // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
+            implementation("io.ktor:ktor-client-okhttp:2.3.7")
+        }
+
         jvmMain.dependencies {
             implementation(kotlin("stdlib-jdk8"))
 
@@ -76,7 +81,7 @@ publishing {
     publications.withType<MavenPublication> {
         artifactId = "exchangeit-sdk"
         groupId = "dev.voir"
-        version = "1.0.0"
+        version = "1.0.1"
 
         artifact(tasks.register("${name}JavadocJar", Jar::class) {
             archiveClassifier.set("javadoc")
