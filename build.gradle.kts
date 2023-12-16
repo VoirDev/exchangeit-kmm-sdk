@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
     id("maven-publish")
     id("signing")
 }
@@ -19,17 +18,9 @@ allprojects {
     }
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-        }
-    }
-}
 
 group = "dev.voir"
-version = "1.0.0"
+version = "1.0.1"
 
 kotlin {
     jvm()
@@ -72,11 +63,34 @@ kotlin {
     }
 }
 
+afterEvaluate {
+    configure<PublishingExtension> {
+        publications.all {
+            val mavenPublication = this as? MavenPublication
+            mavenPublication?.artifactId =
+                "${project.name}${"-$name".takeUnless { "kotlinMultiplatform" in name }.orEmpty()}"
+        }
+    }
+}
+
 publishing {
+    if (project.hasProperty("sonatypeUsername") && project.hasProperty("sonatypePassword")) {
+        repositories {
+            maven {
+                name = "Sonatype"
+                setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = project.property("sonatypeUsername").toString()
+                    password = project.property("sonatypePassword").toString()
+                }
+            }
+        }
+    }
+
     publications.withType<MavenPublication> {
         artifactId = "exchangeit-sdk"
         groupId = "dev.voir"
-        version = "1.0.0"
+        version = "1.0.1"
 
         artifact(tasks.register("${name}JavadocJar", Jar::class) {
             archiveClassifier.set("javadoc")
@@ -84,7 +98,6 @@ publishing {
         })
 
         pom {
-            packaging = "jar"
             name.set("Exchange It: Kotlin Multiplatform SDK")
             url.set("https://github.com/VoirDev/exchangeit-kmm-sdk/")
             description.set("SDK for Exchange It API written in Kotlin. For now supports iOS, JVM and Android.")
