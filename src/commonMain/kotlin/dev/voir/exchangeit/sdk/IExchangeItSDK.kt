@@ -3,7 +3,11 @@ package dev.voir.exchangeit.sdk
 import dev.voir.exchangeit.sdk.dto.*
 
 interface IExchangeItSDK {
-    suspend fun getCurrencies(crypto: Boolean? = null): DataArrayDto<CurrencyDto>
+    suspend fun getCurrencies(crypto: Boolean? = null, search: String? = null): ListDto<CurrencyDto>
+
+    suspend fun getCurrencyDetailed(base: String): DataDto<CurrencyDetailedDto>
+
+    suspend fun getLatestRates(codes: List<String>): ListDto<CurrencyWithLatestRatesDto>
 
     suspend fun getLatestRates(base: String, codes: List<String>? = null): DataDto<CurrencyWithLatestRatesDto>
 

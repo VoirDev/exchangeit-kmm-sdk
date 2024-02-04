@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.9.21"
-    kotlin("plugin.serialization") version "1.9.21"
+    kotlin("multiplatform") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.22"
     id("maven-publish")
     id("signing")
 }
@@ -20,7 +20,7 @@ allprojects {
 
 
 group = "dev.voir"
-version = "1.0.1"
+version = "1.0.2"
 
 kotlin {
     jvm()
@@ -37,11 +37,15 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-core:2.3.7")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
-            implementation("io.ktor:ktor-client-serialization:2.3.7")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+            implementation("io.ktor:ktor-client-core:2.3.8")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.8")
+            implementation("io.ktor:ktor-client-serialization:2.3.8")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
+            //implementation("io.ktor:ktor-client-logging:2.3.8")
+
+            //implementation("ch.qos.logback:logback-classic:1.4.14")
         }
+
         commonTest.dependencies {
             // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
@@ -53,12 +57,12 @@ kotlin {
             implementation(kotlin("stdlib-jdk8"))
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-okhttp:2.3.7")
+            implementation("io.ktor:ktor-client-okhttp:2.3.8")
         }
 
         iosMain.dependencies {
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-darwin:2.3.7")
+            implementation("io.ktor:ktor-client-darwin:2.3.8")
         }
     }
 }
@@ -90,7 +94,7 @@ publishing {
     publications.withType<MavenPublication> {
         artifactId = "exchangeit-sdk"
         groupId = "dev.voir"
-        version = "1.0.1"
+        version = "1.0.2"
 
         artifact(tasks.register("${name}JavadocJar", Jar::class) {
             archiveClassifier.set("javadoc")
