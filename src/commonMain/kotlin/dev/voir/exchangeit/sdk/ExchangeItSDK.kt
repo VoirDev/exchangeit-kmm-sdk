@@ -36,6 +36,11 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
                 prettyPrint = true
             })
         }
+        /*
+        install(Logging) {
+            logger = Logger.DEFAULT
+        }
+         */
     }.apply {
         sendPipeline.intercept(HttpSendPipeline.Before) {
             try {
@@ -46,9 +51,20 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }
     }
 
-    override suspend fun getCurrencies(crypto: Boolean?): DataArrayDto<CurrencyDto> {
+    override suspend fun getCurrencies(crypto: Boolean?, search: String?): ListDto<CurrencyDto> {
         return client.get("currencies") {
             parameter("crypto", crypto)
+            parameter("search", search)
+        }.bodyOrThrow()
+    }
+
+    override suspend fun getCurrencyDetailed(base: String): DataDto<CurrencyDetailedDto> {
+        return client.get("currencies/${base}").bodyOrThrow()
+    }
+
+    override suspend fun getLatestRates(codes: List<String>): ListDto<CurrencyWithLatestRatesDto> {
+        return client.get("rates/latest") {
+            parameter("codes", codes.joinToString(","))
         }.bodyOrThrow()
     }
 
