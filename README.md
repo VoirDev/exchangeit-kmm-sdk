@@ -20,7 +20,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("dev.voir:exchangeit-sdk:1.0.5")
+    implementation("dev.voir:exchangeit-sdk:1.0.6")
 }
 ```
 
