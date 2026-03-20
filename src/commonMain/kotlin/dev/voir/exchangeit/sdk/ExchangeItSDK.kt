@@ -22,12 +22,16 @@ private val json = Json {
     prettyPrint = true
 }
 
-class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
+class ExchangeItSDK(
+    engine: HttpClientEngine,
+    private val apiHost: String = "api.exchangeit.app",
+    private val apiBasePath: String = ""
+) : IExchangeItSDK {
     private val client = HttpClient(engine) {
         defaultRequest {
             url.protocol = URLProtocol.HTTPS
-            url.host = API_HOST
-            url.path(API_BASE_PATH, url.encodedPath)
+            url.host = apiHost
+            url.path(apiBasePath, url.encodedPath)
         }
         install(ContentNegotiation) {
             json(Json {
@@ -156,10 +160,5 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
             }
             throw ExchangeItSDKException(ExchangeItSDKError(status.value, bodyError))
         }
-    }
-
-    companion object {
-        private const val API_HOST = "api.exchangeit.app"
-        private const val API_BASE_PATH = ""
     }
 }
