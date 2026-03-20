@@ -24,14 +24,19 @@ private val json = Json {
 
 class ExchangeItSDK(
     engine: HttpClientEngine,
-    private val apiHost: String = "api.exchangeit.app",
-    private val apiBasePath: String = ""
+    private val config: ExchangeItSDKConfig
 ) : IExchangeItSDK {
     private val client = HttpClient(engine) {
+        install(HttpTimeout) {
+            requestTimeoutMillis = config.requestTimeoutMillis
+            connectTimeoutMillis = config.connectTimeoutMillis
+            socketTimeoutMillis = config.socketTimeoutMillis
+        }
+
         defaultRequest {
             url.protocol = URLProtocol.HTTPS
-            url.host = apiHost
-            url.path(apiBasePath, url.encodedPath)
+            url.host = config.host
+            url.path(config.basePath, url.encodedPath)
         }
         install(ContentNegotiation) {
             json(Json {
