@@ -1,40 +1,100 @@
-name: Release the SDK
+name: Publish to Maven Central
 
 on:
-  release:
-    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Git tag to create after a successful publish (example: v1.0.7)"
+        required: true
+        type: string
+      release_name:
+        description: "GitHub release title"
+        required: false
+        type: string
+      release_notes:
+        description: "Optional release notes"
+        required: false
+        type: string
 
 jobs:
-  build-and-release:
-    name: Check and release
+  publish:
+    runs-on: ubuntu-latest
 
-    runs-on: macos-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v3
-
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v7
+      - name: Check out repository
+        uses: actions/checkout@v5
         with:
-          gpg_private_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          fetch-depth: 0
 
-      - name: Setup Java
+      - name: Set up Java
         uses: actions/setup-java@v5
         with:
-          distribution: 'corretto'
-          java-version: '21'
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
 
-      - name: Gradle publish
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: |
-            publishAllPublicationsToSonatypeRepository
-            -Psigning.gnupg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-            -Psigning.gnupg.keyName=${{ secrets.OSSRH_GPG_SECRET_KEY_ID }}
-            -PsonatypeUsername=${{ secrets.OSSRH_USERNAME }}
-            -PsonatypePassword=${{ secrets.OSSRH_TOKEN }}
+      - name: Validate tag matches Gradle version
+        shell: bash
+        run: |
+          PROJECT_VERSION="$(./gradlew properties -q | awk -F': ' '/^version:/ {print $2; exit}')"
+          EXPECTED_TAG="v${PROJECT_VERSION}"
+
+          echo "Project version: ${PROJECT_VERSION}"
+          echo "Expected tag:    ${EXPECTED_TAG}"
+          echo "Provided tag:    ${{ inputs.tag }}"
+
+          if [ "${{ inputs.tag }}" != "${EXPECTED_TAG}" ]; then
+            echo "Tag does not match project version."
+            echo "Expected: ${EXPECTED_TAG}"
+            exit 1
+          fi
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Create and push git tag
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git rev-parse "${{ inputs.tag }}" >/dev/null 2>&1; then
+            echo "Tag already exists locally: ${{ inputs.tag }}"
+            exit 1
+          fi
+
+          if git ls-remote --tags origin "refs/tags/${{ inputs.tag }}" | grep -q "${{ inputs.tag }}"; then
+            echo "Tag already exists on origin: ${{ inputs.tag }}"
+            exit 1
+          fi
+
+          git tag -a "${{ inputs.tag }}" -m "Release ${{ inputs.tag }}"
+          git push origin "${{ inputs.tag }}"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          RELEASE_NAME="${{ inputs.release_name }}"
+          if [ -z "$RELEASE_NAME" ]; then
+            RELEASE_NAME="${{ inputs.tag }}"
+          fi
+
+          if [ -n "${{ inputs.release_notes }}" ]; then
+            gh release create "${{ inputs.tag }}" \
+              --title "$RELEASE_NAME" \
+              --notes "${{ inputs.release_notes }}"
+          else
+            gh release create "${{ inputs.tag }}" \
+              --title "$RELEASE_NAME" \
+              --generate-notes
+          fi
